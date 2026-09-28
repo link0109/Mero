@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MeRo | Mero Photography</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Montserrat:wght@300;500;700&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <!-- استيراد خطوط احترافية جديدة -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;700&family=Plus+Jakarta+Sans:wght@300;400;600&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -14,7 +15,7 @@
         }
 
         body {
-            margin: 0; font-family: 'Montserrat', 'Cairo', sans-serif;
+            margin: 0; font-family: 'Plus Jakarta Sans', 'Cairo', sans-serif;
             background: #0f0f0f url('background.jpeg') no-repeat center center/cover fixed;
             display: flex; justify-content: center;
         }
@@ -34,7 +35,7 @@
         }
 
         .brand-container { text-align: center; margin-bottom: 30px; }
-        .brand-name { font-family: 'Cinzel', serif; color: #fff; font-size: 32px; letter-spacing: 4px; text-transform: uppercase; margin: 0; }
+        .brand-name { font-family: 'Cormorant Garamond', serif; color: #fff; font-size: 36px; letter-spacing: 4px; text-transform: uppercase; margin: 0; }
         .brand-sub { color: var(--gold); font-size: 11px; letter-spacing: 6px; text-transform: uppercase; margin-top: 5px; }
 
         .button {
@@ -63,17 +64,19 @@
             cursor: pointer; transition: 0.3s; box-sizing: border-box;
         }
         .pkg-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; }
-        .pkg-name { font-weight: bold; color: var(--gold); font-size: 16px; }
+        .pkg-name { font-weight: bold; color: var(--gold); font-size: 16px; font-family: 'Cormorant Garamond', serif; letter-spacing: 1px; }
         .pkg-price { background: var(--gold); color: #000; padding: 2px 10px; border-radius: 6px; font-weight: bold; }
-        .pkg-desc { font-size: 13px; color: #ccc; line-height: 1.7; text-align: right; display: none; margin-top: 10px; padding-top: 10px; border-top: 1px dashed rgba(255,255,255,0.1); }
+        .pkg-desc { font-size: 13px; color: #ccc; line-height: 1.7; text-align: left; display: none; margin-top: 10px; padding-top: 10px; border-top: 1px dashed rgba(255,255,255,0.1); }
         .package-card.active .pkg-desc { display: block; }
-        .pkg-hint { font-size: 11px; color: var(--gold); text-align: left; margin-top: 5px; }
+        .pkg-hint { font-size: 11px; color: var(--gold); text-align: left; margin-top: 5px; font-style: italic; }
 
         .session-item {
             display: flex; justify-content: space-between; align-items: center;
             padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05);
-            transition: 0.3s; cursor: pointer; color: #fff;
+            color: #fff; font-size: 14px;
         }
+        .session-item label { display: flex; align-items: center; gap: 10px; cursor: pointer; width: 100%; justify-content: space-between; }
+        .session-item input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--gold); cursor: pointer; margin: 0; }
 
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -81,11 +84,10 @@
         }
         .modal-content { background: #1a1a1a; padding: 25px; border-radius: 20px; border: 1px solid var(--gold); width: 85%; max-width: 380px; text-align: right; color: white; }
         
-        select, input { width: 100%; padding: 12px; margin-top: 10px; border-radius: 8px; background: #000; color: white; border: 1px solid #333; box-sizing: border-box; font-family: 'Cairo'; outline: none;}
-        .confirm-btn { background: var(--gold); color: #000; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: bold; margin-top: 20px; cursor: pointer; font-family: 'Cairo'; }
+        select, input { width: 100%; padding: 12px; margin-top: 10px; border-radius: 8px; background: #000; color: white; border: 1px solid #333; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; outline: none;}
+        .confirm-btn { background: var(--gold); color: #000; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: bold; margin-top: 20px; cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif; }
         
-        .notes-box { width: 100%; max-width: 380px; text-align: right; background: rgba(212, 175, 55, 0.1); padding: 15px; border-radius: 12px; margin: 10px 0 20px 0; border: 1px dashed var(--gold); }
-        .pay-option-btn { display: block; width: 100%; padding: 15px; margin: 12px 0; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; text-align: center; font-family: 'Cairo'; text-decoration: none; }
+        .pay-option-btn { display: block; width: 100%; padding: 15px; margin: 12px 0; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; text-align: center; font-family: 'Plus Jakarta Sans', sans-serif; text-decoration: none; }
         .vf-style { background: #e60000; color: white; }
         .orange-style { background: #ff6600; color: white; }
         .insta-style { background: white; color: black; }
@@ -129,82 +131,104 @@
     </div>
 
     <div id="packages-view">
-        <h2 style="color: var(--gold); font-family: 'Cinzel'; text-align: center;">MERO PHOTOGRAPHY</h2>
+        <h2 style="color: var(--gold); font-family: 'Cormorant Garamond'; text-align: center; letter-spacing: 2px;">MERO PHOTOGRAPHY</h2>
         
         <div class="package-card" onclick="togglePkg(this)">
             <div class="pkg-header"><span class="pkg-name">Wedding Session</span><span class="pkg-price">4,000 LE</span></div>
-            <div class="pkg-hint">اضغط لمعرفة التفاصيل والحجز 👇</div>
+            <div class="pkg-hint">Tap to view details & book 👇</div>
             <div class="pkg-desc">
                 • 2 Hours<br>• Album 30x45<br>• Tablo 40x50<br>• Flash Memory USB
-                <button class="confirm-btn" style="margin-top:12px;" onclick="event.stopPropagation(); openBookingForm('Wedding Session', '4,000 LE')">اختر واحجز الموعد</button>
+                <button class="confirm-btn" style="margin-top:12px;" onclick="event.stopPropagation(); openBookingForm('Wedding Session', 4000)">Select & Book Appointment</button>
             </div>
         </div>
 
         <div class="package-card" onclick="togglePkg(this)">
             <div class="pkg-header"><span class="pkg-name">Katb Ketab</span><span class="pkg-price">4,500 LE</span></div>
-            <div class="pkg-hint">اضغط لمعرفة التفاصيل والحجز 👇</div>
+            <div class="pkg-hint">Tap to view details & book 👇</div>
             <div class="pkg-desc">
                 • 4 Hours<br>• Photo Session<br>• Covering of Katb Ketab<br>• Album 30x45<br>• Tablo 40x60<br>• Flash Memory USB
-                <button class="confirm-btn" style="margin-top:12px;" onclick="event.stopPropagation(); openBookingForm('Katb Ketab', '4,500 LE')">اختر واحجز الموعد</button>
+                <button class="confirm-btn" style="margin-top:12px;" onclick="event.stopPropagation(); openBookingForm('Katb Ketab', 4500)">Select & Book Appointment</button>
             </div>
         </div>
 
         <div class="package-card" onclick="togglePkg(this)">
             <div class="pkg-header"><span class="pkg-name">Half Day</span><span class="pkg-price">6,000 LE</span></div>
-            <div class="pkg-hint">اضغط لمعرفة التفاصيل والحجز 👇</div>
+            <div class="pkg-hint">Tap to view details & book 👇</div>
             <div class="pkg-desc">
                 • 7 Hours<br>• Photo Session<br>• Covering of Party<br>• Album 30x60<br>• Tablo 50x60<br>• Flash Memory USB
-                <button class="confirm-btn" style="margin-top:12px;" onclick="event.stopPropagation(); openBookingForm('Half Day', '6,000 LE')">اختر واحجز الموعد</button>
+                <button class="confirm-btn" style="margin-top:12px;" onclick="event.stopPropagation(); openBookingForm('Half Day', 6000)">Select & Book Appointment</button>
             </div>
         </div>
 
         <div class="package-card" onclick="togglePkg(this)">
             <div class="pkg-header"><span class="pkg-name">Full Day</span><span class="pkg-price">8,000 LE</span></div>
-            <div class="pkg-hint">اضغط لمعرفة التفاصيل والحجز 👇</div>
+            <div class="pkg-hint">Tap to view details & book 👇</div>
             <div class="pkg-desc">
                 • 12 Hours<br>• 2 Photographer<br>• Preparations<br>• Firstlook<br>• Photo Session<br>• Covering of Party<br>• Album 30x60<br>• Tablo 50x70<br>• Flash Memory USB
-                <button class="confirm-btn" style="margin-top:12px;" onclick="event.stopPropagation(); openBookingForm('Full Day', '8,000 LE')">اختر واحجز الموعد</button>
+                <button class="confirm-btn" style="margin-top:12px;" onclick="event.stopPropagation(); openBookingForm('Full Day', 8000)">Select & Book Appointment</button>
             </div>
         </div>
 
         <div class="package-card" onclick="togglePkg(this)">
             <div class="pkg-header"><span class="pkg-name">VIP Package</span><span class="pkg-price">13,000 LE</span></div>
-            <div class="pkg-hint">اضغط لمعرفة التفاصيل والحجز 👇</div>
+            <div class="pkg-hint">Tap to view details & book 👇</div>
             <div class="pkg-desc">
                 • Unlimited Hours<br>• 3 Photographer<br>• Preparations<br>• Firstlook<br>• Promo Video<br>• Online Gallery<br>• Photo Session<br>• Covering of Party<br>• Album 30x60<br>• Tablo 50x70<br>• Flash Memory USB
-                <button class="confirm-btn" style="margin-top:12px;" onclick="event.stopPropagation(); openBookingForm('VIP Package', '13,000 LE')">اختر واحجز الموعد</button>
+                <button class="confirm-btn" style="margin-top:12px;" onclick="event.stopPropagation(); openBookingForm('VIP Package', 13000)">Select & Book Appointment</button>
             </div>
         </div>
 
-        <h2 style="color: var(--gold); font-family: 'Cinzel'; margin-top:20px; text-align: center;">PROMO VIDEO</h2>
+        <h2 style="color: var(--gold); font-family: 'Cormorant Garamond'; margin-top:20px; text-align: center; letter-spacing: 2px;">PROMO VIDEO</h2>
         <div class="package-card" style="border-right: 5px solid #fff; padding: 10px;">
-            <div class="session-item" onclick="openBookingForm('Promo Video Half Day', '3,500 LE')">
-                <span><b>Half Day (6 Hours)</b><br><small style="color:#aaa;">• 1 Camera • 3 to 5 Minuts • 4K</small></span>
+            <div class="session-item" onclick="openBookingForm('Promo Video Half Day', 3500)">
+                <span><b>Half Day (6 Hours)</b><br><small style="color:#aaa;">• 1 Camera • 3 to 5 Minutes • 4K</small></span>
                 <b style="color:var(--gold);">3,500 LE</b>
             </div>
-            <div class="session-item" onclick="openBookingForm('Promo Video Full Day', '5,000 LE')">
-                <span><b>Full Day (12 Hours)</b><br><small style="color:#aaa;">• 1 Camera • 5 to 7 Minuts • 4K</small></span>
+            <div class="session-item" onclick="openBookingForm('Promo Video Full Day', 5000)">
+                <span><b>Full Day (12 Hours)</b><br><small style="color:#aaa;">• 1 Camera • 5 to 7 Minutes • 4K</small></span>
                 <b style="color:var(--gold);">5,000 LE</b>
             </div>
         </div>
 
-        <h2 style="color: var(--gold); font-family: 'Cinzel'; margin-top:10px; text-align: center;">ADDITIONAL EXTRAS</h2>
+        <!-- قسم الإضافات بنظام الـ Checkboxes -->
+        <h2 style="color: var(--gold); font-family: 'Cormorant Garamond'; margin-top:10px; text-align: center; letter-spacing: 2px;">ADDITIONAL EXTRAS</h2>
         <div class="package-card" style="border-right: 5px solid #fff; padding: 10px;">
-            <div class="session-item" onclick="openBookingForm('Extra Hour', '1,000 LE')">
-                <span>Extra Hour</span><b style="color:var(--gold);">1,000 LE</b>
+            <div class="session-item">
+                <label>
+                    <span><input type="checkbox" class="extra-item" value="Extra Hour" data-price="1000"> Extra Hour</span>
+                    <b style="color:var(--gold);">1,000 LE</b>
+                </label>
             </div>
-            <div class="session-item" onclick="openBookingForm('Casual Session in Cairo', '3,000 LE')">
-                <span>Casual Session in Cairo</span><b style="color:var(--gold);">3,000 LE</b>
+            <div class="session-item">
+                <label>
+                    <span><input type="checkbox" class="extra-item" value="Casual Session in Cairo" data-price="3000"> Casual Session in Cairo</span>
+                    <b style="color:var(--gold);">3,000 LE</b>
+                </label>
+            </div>
+            <div class="session-item">
+                <label>
+                    <span><input type="checkbox" class="extra-item" value="Media Coverage for Session" data-price="1000"> Media Coverage for Session</span>
+                    <b style="color:var(--gold);">1,000 LE</b>
+                </label>
+            </div>
+            <div class="session-item">
+                <label>
+                    <span><input type="checkbox" class="extra-item" value="Media Coverage for Full Day" data-price="3000"> Media Coverage for Full Day</span>
+                    <b style="color:var(--gold);">3,000 LE</b>
+                </label>
             </div>
         </div>
 
-        <button class="confirm-btn" onclick="showMain()" style="background:none; color:var(--gold); border:1px solid var(--gold); width:auto; padding:10px 40px; margin-bottom: 40px; margin-top: 20px;">العودة للرئيسية</button>
+        <!-- زر المتابعة للحجز بعد تحديد الإضافات -->
+        <button class="confirm-btn" onclick="proceedToBookingWithExtras()" style="width: 100%; max-width: 380px; margin-bottom: 10px;">Proceed with Selected Extras</button>
+
+        <button class="confirm-btn" onclick="showMain()" style="background:none; color:var(--gold); border:1px solid var(--gold); width:auto; padding:10px 40px; margin-bottom: 40px; margin-top: 10px;">العودة للرئيسية</button>
     </div>
 
-    <!-- نموذج حجز متصل بجوجل شيت والتقويم -->
+    <!-- نموذج الحجز -->
     <div id="booking-view">
         <div class="modal-content" style="width: 100%; max-width: 380px; box-sizing: border-box; margin-bottom: 40px;">
-            <h3 style="color:var(--gold); text-align:center;" id="bk-title">حجز الموعد</h3>
+            <h3 style="color:var(--gold); text-align:center; font-family:'Cormorant Garamond';" id="bk-title">حجز الموعد</h3>
             <form id="bookingForm" onsubmit="submitBooking(event)">
                 <input type="hidden" id="pkgName">
                 <input type="hidden" id="pkgPrice">
@@ -251,10 +275,10 @@
 </div></div>
 
 <script>
-// ==========================================
-// حط لينك السكربت الخاص بك هنا بين العلامتين
 const SCRIPT_URL = "PUT_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE"; 
-// ==========================================
+
+let selectedPackageName = "";
+let selectedPackageBasePrice = 0;
 
 function showPackages() { 
     document.getElementById('main-view').style.display='none'; 
@@ -271,13 +295,49 @@ function togglePkg(card) {
     card.classList.toggle('active');
 }
 function openBookingForm(name, price) {
+    selectedPackageName = name;
+    selectedPackageBasePrice = price;
+    // إلغاء تحديد الإضافات السابقة عند اختيار باكدج رئيسي جديد
+    document.querySelectorAll('.extra-item').forEach(cb => cb.checked = false);
+    
     document.getElementById('pkgName').value = name;
-    document.getElementById('pkgPrice').value = price;
-    document.getElementById('bk-title').innerText = 'حجز: ' + name + ' (' + price + ')';
+    document.getElementById('pkgPrice').value = price.toLocaleString() + ' LE';
+    document.getElementById('bk-title').innerText = 'حجز: ' + name + ' (' + price.toLocaleString() + ' LE)';
     document.getElementById('packages-view').style.display='none';
     document.getElementById('booking-view').style.display='flex';
     window.scrollTo(0,0);
 }
+
+// دالة للانتقال للحجز مع احتساب الإضافات المختارة كعلامة صح
+function proceedToBookingWithExtras() {
+    let checkedExtras = [];
+    let extrasTotal = 0;
+
+    document.querySelectorAll('.extra-item:checked').forEach(cb => {
+        checkedExtras.push(cb.value);
+        extrasTotal += parseInt(cb.dataset.price);
+    });
+
+    if(!selectedPackageName) {
+        selectedPackageName = "Custom Selection (Extras)";
+        selectedPackageBasePrice = 0;
+    }
+
+    let finalTotal = selectedPackageBasePrice + extrasTotal;
+    let fullPkgDescription = selectedPackageName;
+    if(checkedExtras.length > 0) {
+        fullPkgDescription += " + [" + checkedExtras.join(", ") + "]";
+    }
+
+    document.getElementById('pkgName').value = fullPkgDescription;
+    document.getElementById('pkgPrice').value = finalTotal.toLocaleString() + ' LE';
+    document.getElementById('bk-title').innerText = 'حجز: ' + finalTotal.toLocaleString() + ' LE';
+    
+    document.getElementById('packages-view').style.display='none';
+    document.getElementById('booking-view').style.display='flex';
+    window.scrollTo(0,0);
+}
+
 function openModal(id) { document.getElementById(id).style.display = 'flex'; }
 function openOne(id) { closeAll(); document.getElementById(id).style.display = 'flex'; }
 function closeAll() { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); }
@@ -291,7 +351,7 @@ function submitBooking(e) {
     const name = document.getElementById('clientName').value;
     const phone = document.getElementById('clientPhone').value;
     const date = document.getElementById('bookingDate').value;
-    const time = document.getElementById('bookingTime5').value || document.getElementById('bookingTime').value;
+    const time = document.getElementById('bookingTime').value;
     const pkg = document.getElementById('pkgName').value;
     const price = document.getElementById('pkgPrice').value;
 
@@ -303,7 +363,6 @@ function submitBooking(e) {
         package: pkg + ' - ' + price
     };
 
-    // إرسال البيانات لجوجل شيت والتقويم إذا تم وضع الرابط
     if(SCRIPT_URL && SCRIPT_URL !== "PUT_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE") {
         fetch(SCRIPT_URL, {
             method: 'POST',
@@ -313,9 +372,8 @@ function submitBooking(e) {
         }).catch(err => console.log(err));
     }
 
-    // فتح واتساب لتأكيد الحجز
     setTimeout(() => {
-        const msg = `أهلاً MeRo، أرغب في تأكيد حجز:\n- الباكدج: ${pkg} (${price})\n- الاسم: ${name}\n- الهاتف: ${phone}\n- التاريخ: ${date}\n- الوقت: ${time}`;
+        const msg = `أهلاً MeRo، أرغب في تأكيد حجز:\n- الباكدج والإضافات: ${pkg} (${price})\n- الاسم: ${name}\n- الهاتف: ${phone}\n- التاريخ: ${date}\n- الوقت: ${time}`;
         window.open(`https://wa.me/201097422490?text=${encodeURIComponent(msg)}`);
         btn.disabled = false;
         btn.innerText = 'تأكيد الحجز عبر واتساب';
