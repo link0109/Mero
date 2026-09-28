@@ -63,6 +63,10 @@
             border-right: 5px solid var(--gold); border: 1px solid var(--border-color);
             cursor: pointer; transition: 0.3s; box-sizing: border-box;
         }
+        .package-card.selected-pkg {
+            border: 2px solid var(--gold);
+            background: rgba(212, 175, 55, 0.1);
+        }
         .pkg-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; }
         .pkg-name { font-weight: bold; color: var(--gold); font-size: 16px; font-family: 'Cormorant Garamond', serif; letter-spacing: 1px; }
         .pkg-price { background: var(--gold); color: #000; padding: 2px 10px; border-radius: 6px; font-weight: bold; }
@@ -76,7 +80,7 @@
             color: #fff; font-size: 14px;
         }
         .session-item label { display: flex; align-items: center; gap: 10px; cursor: pointer; width: 100%; justify-content: space-between; }
-        .session-item input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--gold); cursor: pointer; margin: 0; }
+        .session-item input[type="radio"], .session-item input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--gold); cursor: pointer; margin: 0; }
 
         .modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -89,9 +93,45 @@
         
         .pay-option-btn { display: block; width: 100%; padding: 15px; margin: 12px 0; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; text-align: center; font-family: 'Plus Jakarta Sans', sans-serif; text-decoration: none; }
         .vf-style { background: #e60000; color: white; }
+        
+        .call-btn-small {
+            background: #000; 
+            color: white; 
+            border: 1px solid var(--gold); 
+            width: 75%; 
+            max-width: 220px; 
+            margin: 15px auto; 
+            padding: 12px; 
+            border-radius: 10px; 
+            font-weight: bold; 
+            display: block; 
+            text-align: center; 
+            text-decoration: none;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: 0.3s;
+        }
+        .call-btn-small:hover { background: #111; }
+
         .orange-style { background: #ff6600; color: white; }
         .insta-style { background: white; color: black; }
-        .footer-copyrights { margin-top: auto; padding: 30px 0; text-align: center; color: rgba(255, 255, 255, 0.4); font-size: 12px; }
+        
+        /* شريط السعر العائم السفلي للاختيار التلقائي */
+        .floating-total-bar {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: rgba(15, 15, 15, 0.95);
+            border-top: 1px solid var(--gold);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-sizing: border-box;
+            max-width: 450px;
+            margin: 0 auto;
+        }
+
+        .footer-copyrights { margin-top: auto; padding: 30px 0 60px 0; text-align: center; color: rgba(255, 255, 255, 0.4); font-size: 12px; }
     </style>
 </head>
 <body>
@@ -133,96 +173,117 @@
     <div id="packages-view">
         <h2 style="color: var(--gold); font-family: 'Cormorant Garamond'; text-align: center; letter-spacing: 2px;">MERO PHOTOGRAPHY</h2>
         
-        <div class="package-card" onclick="togglePkg(this)">
-            <div class="pkg-header"><span class="pkg-name">Wedding Session</span><span class="pkg-price">4,000 LE</span></div>
-            <div class="pkg-hint">Tap to view details & book 👇</div>
+        <!-- الباكدجات الأساسية (نظام Radio لضمان اختيار باكدج رئيسي واحد أو عدمه) -->
+        <div class="package-card" onclick="selectPkgCard(this)">
+            <div class="pkg-header">
+                <span class="pkg-name"><input type="radio" name="mainPkg" value="Wedding Session" data-price="4000" onchange="calculateTotal()"> Wedding Session</span>
+                <span class="pkg-price">4,000 LE</span>
+            </div>
+            <div class="pkg-hint" onclick="event.stopPropagation(); togglePkg(this.parentElement)">Tap to view details 👇</div>
             <div class="pkg-desc">
                 • 2 Hours<br>• Album 30x45<br>• Tablo 40x50<br>• Flash Memory USB
-                <button class="confirm-btn" style="margin-top:12px;" onclick="event.stopPropagation(); openBookingForm('Wedding Session', 4000)">Select & Book Appointment</button>
             </div>
         </div>
 
-        <div class="package-card" onclick="togglePkg(this)">
-            <div class="pkg-header"><span class="pkg-name">Katb Ketab</span><span class="pkg-price">4,500 LE</span></div>
-            <div class="pkg-hint">Tap to view details & book 👇</div>
+        <div class="package-card" onclick="selectPkgCard(this)">
+            <div class="pkg-header">
+                <span class="pkg-name"><input type="radio" name="mainPkg" value="Katb Ketab" data-price="4500" onchange="calculateTotal()"> Katb Ketab</span>
+                <span class="pkg-price">4,500 LE</span>
+            </div>
+            <div class="pkg-hint" onclick="event.stopPropagation(); togglePkg(this.parentElement)">Tap to view details 👇</div>
             <div class="pkg-desc">
                 • 4 Hours<br>• Photo Session<br>• Covering of Katb Ketab<br>• Album 30x45<br>• Tablo 40x60<br>• Flash Memory USB
-                <button class="confirm-btn" style="margin-top:12px;" onclick="event.stopPropagation(); openBookingForm('Katb Ketab', 4500)">Select & Book Appointment</button>
             </div>
         </div>
 
-        <div class="package-card" onclick="togglePkg(this)">
-            <div class="pkg-header"><span class="pkg-name">Half Day</span><span class="pkg-price">6,000 LE</span></div>
-            <div class="pkg-hint">Tap to view details & book 👇</div>
+        <div class="package-card" onclick="selectPkgCard(this)">
+            <div class="pkg-header">
+                <span class="pkg-name"><input type="radio" name="mainPkg" value="Half Day" data-price="6000" onchange="calculateTotal()"> Half Day</span>
+                <span class="pkg-price">6,000 LE</span>
+            </div>
+            <div class="pkg-hint" onclick="event.stopPropagation(); togglePkg(this.parentElement)">Tap to view details 👇</div>
             <div class="pkg-desc">
                 • 7 Hours<br>• Photo Session<br>• Covering of Party<br>• Album 30x60<br>• Tablo 50x60<br>• Flash Memory USB
-                <button class="confirm-btn" style="margin-top:12px;" onclick="event.stopPropagation(); openBookingForm('Half Day', 6000)">Select & Book Appointment</button>
             </div>
         </div>
 
-        <div class="package-card" onclick="togglePkg(this)">
-            <div class="pkg-header"><span class="pkg-name">Full Day</span><span class="pkg-price">8,000 LE</span></div>
-            <div class="pkg-hint">Tap to view details & book 👇</div>
+        <div class="package-card" onclick="selectPkgCard(this)">
+            <div class="pkg-header">
+                <span class="pkg-name"><input type="radio" name="mainPkg" value="Full Day" data-price="8000" onchange="calculateTotal()"> Full Day</span>
+                <span class="pkg-price">8,000 LE</span>
+            </div>
+            <div class="pkg-hint" onclick="event.stopPropagation(); togglePkg(this.parentElement)">Tap to view details 👇</div>
             <div class="pkg-desc">
                 • 12 Hours<br>• 2 Photographer<br>• Preparations<br>• Firstlook<br>• Photo Session<br>• Covering of Party<br>• Album 30x60<br>• Tablo 50x70<br>• Flash Memory USB
-                <button class="confirm-btn" style="margin-top:12px;" onclick="event.stopPropagation(); openBookingForm('Full Day', 8000)">Select & Book Appointment</button>
             </div>
         </div>
 
-        <div class="package-card" onclick="togglePkg(this)">
-            <div class="pkg-header"><span class="pkg-name">VIP Package</span><span class="pkg-price">13,000 LE</span></div>
-            <div class="pkg-hint">Tap to view details & book 👇</div>
+        <div class="package-card" onclick="selectPkgCard(this)">
+            <div class="pkg-header">
+                <span class="pkg-name"><input type="radio" name="mainPkg" value="VIP Package" data-price="13000" onchange="calculateTotal()"> VIP Package</span>
+                <span class="pkg-price">13,000 LE</span>
+            </div>
+            <div class="pkg-hint" onclick="event.stopPropagation(); togglePkg(this.parentElement)">Tap to view details 👇</div>
             <div class="pkg-desc">
                 • Unlimited Hours<br>• 3 Photographer<br>• Preparations<br>• Firstlook<br>• Promo Video<br>• Online Gallery<br>• Photo Session<br>• Covering of Party<br>• Album 30x60<br>• Tablo 50x70<br>• Tablo 50x70<br>• Flash Memory USB
-                <button class="confirm-btn" style="margin-top:12px;" onclick="event.stopPropagation(); openBookingForm('VIP Package', 13000)">Select & Book Appointment</button>
             </div>
         </div>
 
         <h2 style="color: var(--gold); font-family: 'Cormorant Garamond'; margin-top:20px; text-align: center; letter-spacing: 2px;">PROMO VIDEO</h2>
         <div class="package-card" style="border-right: 5px solid #fff; padding: 10px;">
-            <div class="session-item" onclick="openBookingForm('Promo Video Half Day', 3500)">
-                <span><b>Half Day (6 Hours)</b><br><small style="color:#aaa;">• 1 Camera • 3 to 5 Minutes • 4K</small></span>
-                <b style="color:var(--gold);">3,500 LE</b>
+            <div class="session-item">
+                <label>
+                    <span><input type="radio" name="mainPkg" value="Promo Video Half Day" data-price="3500" onchange="calculateTotal()"> <b>Half Day (6 Hours)</b><br><small style="color:#aaa;">• 1 Camera • 3 to 5 Min • 4K</small></span>
+                    <b style="color:var(--gold);">3,500 LE</b>
+                </label>
             </div>
-            <div class="session-item" onclick="openBookingForm('Promo Video Full Day', 5000)">
-                <span><b>Full Day (12 Hours)</b><br><small style="color:#aaa;">• 1 Camera • 5 to 7 Minutes • 4K</small></span>
-                <b style="color:var(--gold);">5,000 LE</b>
+            <div class="session-item">
+                <label>
+                    <span><input type="radio" name="mainPkg" value="Promo Video Full Day" data-price="5000" onchange="calculateTotal()"> <b>Full Day (12 Hours)</b><br><small style="color:#aaa;">• 1 Camera • 5 to 7 Min • 4K</small></span>
+                    <b style="color:var(--gold);">5,000 LE</b>
+                </label>
             </div>
         </div>
 
-        <!-- قسم الإضافات بنظام الـ Checkboxes -->
+        <!-- قسم الإضافات (Checkboxes لحساب المجموع التلقائي) -->
         <h2 style="color: var(--gold); font-family: 'Cormorant Garamond'; margin-top:10px; text-align: center; letter-spacing: 2px;">ADDITIONAL EXTRAS</h2>
         <div class="package-card" style="border-right: 5px solid #fff; padding: 10px;">
             <div class="session-item">
                 <label>
-                    <span><input type="checkbox" class="extra-item" value="Extra Hour" data-price="1000"> Extra Hour</span>
+                    <span><input type="checkbox" class="extra-item" value="Extra Hour" data-price="1000" onchange="calculateTotal()"> Extra Hour</span>
                     <b style="color:var(--gold);">1,000 LE</b>
                 </label>
             </div>
             <div class="session-item">
                 <label>
-                    <span><input type="checkbox" class="extra-item" value="Casual Session in Cairo" data-price="3000"> Casual Session in Cairo</span>
+                    <span><input type="checkbox" class="extra-item" value="Casual Session in Cairo" data-price="3000" onchange="calculateTotal()"> Casual Session in Cairo</span>
                     <b style="color:var(--gold);">3,000 LE</b>
                 </label>
             </div>
             <div class="session-item">
                 <label>
-                    <span><input type="checkbox" class="extra-item" value="Media Coverage for Session" data-price="1000"> Media Coverage for Session</span>
+                    <span><input type="checkbox" class="extra-item" value="Media Coverage for Session" data-price="1000" onchange="calculateTotal()"> Media Coverage for Session</span>
                     <b style="color:var(--gold);">1,000 LE</b>
                 </label>
             </div>
             <div class="session-item">
                 <label>
-                    <span><input type="checkbox" class="extra-item" value="Media Coverage for Full Day" data-price="3000"> Media Coverage for Full Day</span>
+                    <span><input type="checkbox" class="extra-item" value="Media Coverage for Full Day" data-price="3000" onchange="calculateTotal()"> Media Coverage for Full Day</span>
                     <b style="color:var(--gold);">3,000 LE</b>
                 </label>
             </div>
         </div>
 
-        <!-- زر المتابعة للحجز بعد تحديد الإضافات -->
-        <button class="confirm-btn" onclick="proceedToBookingWithExtras()" style="width: 100%; max-width: 380px; margin-bottom: 10px;">Proceed with Selected Extras</button>
+        <!-- شريط الحساب التلقائي السفلي -->
+        <div class="floating-total-bar">
+            <div>
+                <span style="font-size:12px; color:#aaa; display:block;">الإجمالي التلقائي:</span>
+                <span id="liveTotal" style="color:var(--gold); font-size:18px; font-weight:bold;">0 LE</span>
+            </div>
+            <button class="confirm-btn" onclick="proceedToBooking()" style="margin:0; width:auto; padding:10px 25px;">متابعة الحجز</button>
+        </div>
 
-        <button class="confirm-btn" onclick="showMain()" style="background:none; color:var(--gold); border:1px solid var(--gold); width:auto; padding:10px 40px; margin-bottom: 40px; margin-top: 10px;">العودة للرئيسية</button>
+        <button class="confirm-btn" onclick="showMain()" style="background:none; color:var(--gold); border:1px solid var(--gold); width:auto; padding:10px 40px; margin-top: 20px;">العودة للرئيسية</button>
     </div>
 
     <!-- نموذج الحجز -->
@@ -253,14 +314,15 @@
     <div class="footer-copyrights">© MeRo Photography</div>
 </div>
 
+<!-- نافذة اتصل بنا -->
 <div id="call-modal" class="modal"><div class="modal-content" style="text-align:center;">
-    <h3 style="color:var(--gold);">اتصل بنا</h3>
-    <a href="tel:01097422490" class="pay-option-btn vf-style">01097422490</a>
-    <p onclick="closeAll()" style="cursor:pointer; color:#888;">إغلاق</p>
+    <h3 style="color:var(--gold); font-family: 'Cormorant Garamond';">اتصل بنا</h3>
+    <a href="tel:01097422490" class="call-btn-small">01097422490</a>
+    <p onclick="closeAll()" style="cursor:pointer; color:#888; margin-top: 15px;">إغلاق</p>
 </div></div>
 
 <div id="payment-selection-modal" class="modal"><div class="modal-content">
-    <h3 style="text-align:center; color:var(--gold);">وسيلة التحويل</h3>
+    <h3 style="text-align:center; color:var(--gold); font-family: 'Cormorant Garamond';">وسيلة التحويل</h3>
     <button class="pay-option-btn vf-style" onclick="openOne('vfcash-modal')">فودافون كاش</button>
     <button class="pay-option-btn insta-style" onclick="window.location.href='https://ipn.eg/S/dkjro201097422490/instapay/1BgGIC'">إنستا باي</button>
     <p onclick="closeAll()" style="text-align:center; cursor:pointer; color:#888;">إغلاق</p>
@@ -277,9 +339,6 @@
 <script>
 const SCRIPT_URL = "PUT_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE"; 
 
-let selectedPackageName = "";
-let selectedPackageBasePrice = 0;
-
 function showPackages() { 
     document.getElementById('main-view').style.display='none'; 
     document.getElementById('booking-view').style.display='none'; 
@@ -294,22 +353,35 @@ function showMain() {
 function togglePkg(card) {
     card.classList.toggle('active');
 }
-function openBookingForm(name, price) {
-    selectedPackageName = name;
-    selectedPackageBasePrice = price;
-    // إلغاء تحديد الإضافات السابقة عند اختيار باكدج رئيسي جديد
-    document.querySelectorAll('.extra-item').forEach(cb => cb.checked = false);
-    
-    document.getElementById('pkgName').value = name;
-    document.getElementById('pkgPrice').value = price.toLocaleString() + ' LE';
-    document.getElementById('bk-title').innerText = 'حجز: ' + name + ' (' + price.toLocaleString() + ' LE)';
-    document.getElementById('packages-view').style.display='none';
-    document.getElementById('booking-view').style.display='flex';
-    window.scrollTo(0,0);
+function selectPkgCard(card) {
+    const radio = card.querySelector('input[type="radio"]');
+    if(radio) {
+        radio.checked = true;
+        document.querySelectorAll('.package-card').forEach(c => c.classList.remove('selected-pkg'));
+        card.classList.add('selected-pkg');
+        calculateTotal();
+    }
 }
 
-// دالة للانتقال للحجز مع احتساب الإضافات المختارة كعلامة صح
-function proceedToBookingWithExtras() {
+function calculateTotal() {
+    let total = 0;
+    const selectedRadio = document.querySelector('input[name="mainPkg"]:checked');
+    if(selectedRadio) {
+        total += parseInt(selectedRadio.dataset.price);
+        // تمييز الكارت المختار بصرياً
+        document.querySelectorAll('.package-card').forEach(c => c.classList.remove('selected-pkg'));
+        selectedRadio.closest('.package-card').classList.add('selected-pkg');
+    }
+
+    document.querySelectorAll('.extra-item:checked').forEach(cb => {
+        total += parseInt(cb.dataset.price);
+    });
+
+    document.getElementById('liveTotal').innerText = total.toLocaleString() + ' LE';
+}
+
+function proceedToBooking() {
+    const selectedRadio = document.querySelector('input[name="mainPkg"]:checked');
     let checkedExtras = [];
     let extrasTotal = 0;
 
@@ -318,13 +390,16 @@ function proceedToBookingWithExtras() {
         extrasTotal += parseInt(cb.dataset.price);
     });
 
-    if(!selectedPackageName) {
-        selectedPackageName = "Custom Selection (Extras)";
-        selectedPackageBasePrice = 0;
+    let baseName = selectedRadio ? selectedRadio.value : "إضافات فقط بدون باكدج أساسي";
+    let basePrice = selectedRadio ? parseInt(selectedRadio.dataset.price) : 0;
+    let finalTotal = basePrice + extrasTotal;
+
+    if(finalTotal === 0) {
+        alert("برجاء اختيار باكدج رئيسي أو إضافة واحدة على الأقل قبل المتابعة.");
+        return;
     }
 
-    let finalTotal = selectedPackageBasePrice + extrasTotal;
-    let fullPkgDescription = selectedPackageName;
+    let fullPkgDescription = baseName;
     if(checkedExtras.length > 0) {
         fullPkgDescription += " + [" + checkedExtras.join(", ") + "]";
     }
