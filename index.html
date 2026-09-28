@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MeRo | Mero Photography</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Montserrat:wght@300;500;700&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-blur: rgba(255, 255, 255, 0.08);
+            --border-color: rgba(255, 255, 255, 0.2);
+            --gold: #d4af37;
+        }
+
+        body {
+            margin: 0; font-family: 'Montserrat', 'Cairo', sans-serif;
+            background: #0f0f0f url('background.jpeg') no-repeat center center/cover fixed;
+            display: flex; justify-content: center;
+        }
+
+        .overlay {
+            backdrop-filter: blur(15px) saturate(160%);
+            background: rgba(0, 0, 0, 0.7);
+            width: 100%; min-height: 100vh;
+            padding: 40px 20px; box-sizing: border-box;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        .profile { 
+            width: 120px; height: 120px; border-radius: 50%; object-fit: cover; 
+            border: 2px solid var(--gold); margin-bottom: 20px;
+            object-position: center 10%;
+        }
+
+        .brand-container { text-align: center; margin-bottom: 30px; }
+        .brand-name { font-family: 'Cinzel', serif; color: #fff; font-size: 32px; letter-spacing: 4px; text-transform: uppercase; margin: 0; }
+        .brand-sub { color: var(--gold); font-size: 11px; letter-spacing: 6px; text-transform: uppercase; margin-top: 5px; }
+
+        .button {
+            display: flex; align-items: center; background: var(--bg-blur);
+            border: 1px solid var(--border-color); color: white;
+            text-decoration: none; margin: 8px 0; width: 100%; max-width: 360px;
+            border-radius: 12px; padding: 6px; transition: 0.3s; cursor: pointer;
+        }
+
+        .icon-box { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 10px; font-size: 18px; color: #fff; }
+        .btn-text { flex-grow: 1; text-align: center; font-size: 15px; padding-right: 42px; }
+
+        .fb .icon-box { background: #1877F2; }
+        .ig .icon-box { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+        .wa .icon-box { background: #25D366; }
+        .call .icon-box { background: #444; }
+        .vfcash .icon-box { background: var(--gold); color: #000; }
+        
+        #main-view, #packages-view, #booking-view { width: 100%; display: flex; flex-direction: column; align-items: center; }
+        #packages-view, #booking-view { display: none; }
+
+        .package-card { 
+            width: 100%; max-width: 380px; background: rgba(255,255,255,0.05); 
+            border-radius: 15px; padding: 18px; margin-bottom: 15px; 
+            border-right: 5px solid var(--gold); border: 1px solid var(--border-color);
+            cursor: pointer; transition: 0.3s; box-sizing: border-box;
+        }
+        .pkg-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; }
+        .pkg-name { font-weight: bold; color: var(--gold); font-size: 16px; }
+        .pkg-price { background: var(--gold); color: #000; padding: 2px 10px; border-radius: 6px; font-weight: bold; }
+        .pkg-desc { font-size: 13px; color: #ccc; line-height: 1.7; text-align: right; }
+
+        .session-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: 0.3s; cursor: pointer; color: #fff;
+        }
+
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 9999; justify-content: center; align-items: center;
+        }
+        .modal-content { background: #1a1a1a; padding: 25px; border-radius: 20px; border: 1px solid var(--gold); width: 85%; max-width: 380px; text-align: right; color: white; }
+        
+        select, input { width: 100%; padding: 12px; margin-top: 10px; border-radius: 8px; background: #000; color: white; border: 1px solid #333; box-sizing: border-box; font-family: 'Cairo'; outline: none;}
+        .confirm-btn { background: var(--gold); color: #000; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: bold; margin-top: 20px; cursor: pointer; font-family: 'Cairo'; }
+        
+        .notes-box { width: 100%; max-width: 380px; text-align: right; background: rgba(212, 175, 55, 0.1); padding: 15px; border-radius: 12px; margin: 10px 0 20px 0; border: 1px dashed var(--gold); }
+        .pay-option-btn { display: block; width: 100%; padding: 15px; margin: 12px 0; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; text-align: center; font-family: 'Cairo'; text-decoration: none; }
+        .vf-style { background: #e60000; color: white; }
+        .orange-style { background: #ff6600; color: white; }
+        .insta-style { background: white; color: black; }
+        .footer-copyrights { margin-top: auto; padding: 30px 0; text-align: center; color: rgba(255, 255, 255, 0.4); font-size: 12px; }
+    </style>
+</head>
+<body>
+
+<div class="overlay">
+    <img src="profile.jpg" class="profile" alt="MeRo">
+    <div class="brand-container">
+        <h1 class="brand-name">MeRo</h1>
+        <div class="brand-sub">Professional Photographer</div>
+    </div>
+
+    <div id="main-view">
+        <div class="button" style="border: 2px solid var(--gold);" onclick="showPackages()">
+            <div class="icon-box" style="background:var(--gold); color:black;"><i class="fas fa-tags"></i></div>
+            <div class="btn-text">الأسعار والبكدجات | Prices</div>
+        </div>
+
+        <a class="button fb" href="https://www.facebook.com/ahmd.mhmd.mhmd.505108" target="_blank">
+            <div class="icon-box"><i class="fab fa-facebook-f"></i></div><div class="btn-text">Facebook Profile</div>
+        </a>
+
+        <a class="button ig" href="https://www.instagram.com/mero_photograpy?stkn=Y3Vsbm5wMXd5cThi&utm_source=qr" target="_blank">
+            <div class="icon-box"><i class="fab fa-instagram"></i></div><div class="btn-text">Instagram</div>
+        </a>
+
+        <a class="button wa" href="https://wa.me/201097422490" target="_blank">
+            <div class="icon-box"><i class="fab fa-whatsapp"></i></div><div class="btn-text">WhatsApp</div>
+        </a>
+
+        <div class="button call" onclick="openModal('call-modal')">
+            <div class="icon-box"><i class="fas fa-phone-alt"></i></div><div class="btn-text">اتصل بنا | Call Me</div>
+        </div>
+
+        <div class="button vfcash" onclick="openModal('payment-selection-modal')">
+            <div class="icon-box"><i class="fas fa-money-bill-wave"></i></div><div class="btn-text">تحويل المبلغ | Transfer</div>
+        </div>
+    </div>
+
+    <div id="packages-view">
+        <h2 style="color: var(--gold); font-family: 'Cinzel'; text-align: center;">WEDDING PACKAGES</h2>
+        
+        <div class="package-card" onclick="openBookingForm('Package 1', '2000 LE')">
+            <div class="pkg-header"><span class="pkg-name">Package 1</span><span class="pkg-price">2000 LE</span></div>
+            <div class="pkg-desc">سيشن <br> ريلز بالموبايل <br> عدد ساعات العمل: 2 ساعة <br> برواز خشب 50×70 <br> عدد صور مفتوح</div>
+        </div>
+
+        <div class="package-card" onclick="openBookingForm('Package 2', '5000 LE')">
+            <div class="pkg-header"><span class="pkg-name">Package 2</span><span class="pkg-price">5000 LE</span></div>
+            <div class="pkg-desc">سيشن / كنيسة أو كتب كتاب / قاعة <br> ريلز بالموبايل <br> عدد ساعات العمل: 8 ساعات <br> برواز خشب 50×70 <br> ألبوم 30×45 <br> عدد صور مفتوح</div>
+        </div>
+
+        <div class="package-card" onclick="openBookingForm('VIP Package', '13000 LE')">
+            <div class="pkg-header"><span class="pkg-name">VIP Package</span><span class="pkg-price">13000 LE</span></div>
+            <div class="pkg-desc">تجهيزات / سيشن / كنيسة أو كتب كتاب / قاعة <br> ريلز بالموبايل <br> عدد ساعات العمل: 12 ساعة <br> ألبوم 30×45 <br> برواز خشب 50×70 <br> 2 مصور فوتوغرافي <br> برومو فيديو <br> عدد الصور مفتوح</div>
+        </div>
+
+        <h2 style="color: var(--gold); font-family: 'Cinzel'; margin-top:20px; text-align: center;">PROMO VIDEO | برومو فيديو</h2>
+        <div class="package-card" style="border-right: 5px solid #fff; padding: 5px; cursor:default;">
+            <div class="session-item" onclick="openBookingForm('برومو فيديو - يوم كامل', '5000 LE')"><span>يوم كامل</span><b>5000 LE</b></div>
+            <div class="session-item" onclick="openBookingForm('برومو فيديو - نص يوم', '3500 LE')"><span>نص يوم</span><b>3500 LE</b></div>
+            <div class="session-item" onclick="openBookingForm('برومو فيديو - سيشن', '2500 LE')"><span>سيشن</span><b>2500 LE</b></div>
+        </div>
+
+        <div class="notes-box">
+            <h4 style="color: var(--gold); margin: 0 0 10px 0;">NOTES | ملاحظات هامة</h4>
+            <ul style="color: #eee; font-size: 13px; padding-right: 20px; margin: 0; line-height: 1.6;">
+                <li>سعر الباكدج غير شامل دخول المكان.</li>
+                <li>في حاله الإلغاء لا يتم استرجاع العربون.</li>
+                <li>تسليم الصور في خلال 20 يوم عن طريق لينك أونلاين.</li>
+                <li>يجب الالتزام بمواعيد السيشن المتفق عليها.</li>
+            </ul>
+        </div>
+
+        <button class="confirm-btn" onclick="showMain()" style="background:none; color:var(--gold); border:1px solid var(--gold); width:auto; padding:10px 40px; margin-bottom: 40px;">العودة للرئيسية</button>
+    </div>
+
+    <!-- نموذج حجز متصل بجوجل شيت والتقويم -->
+    <div id="booking-view">
+        <div class="modal-content" style="width: 100%; max-width: 380px; box-sizing: border-box; margin-bottom: 40px;">
+            <h3 style="color:var(--gold); text-align:center;" id="bk-title">حجز الموعد</h3>
+            <form id="bookingForm" onsubmit="submitBooking(event)">
+                <input type="hidden" id="pkgName">
+                <input type="hidden" id="pkgPrice">
+                <label style="font-size: 13px; color: #aaa;">اسم العميل:</label>
+                <input type="text" id="clientName" placeholder="ادخل اسمك الكامل" required>
+                
+                <label style="font-size: 13px; color: #aaa; margin-top: 10px; display:block;">رقم الهاتف:</label>
+                <input type="tel" id="clientPhone" placeholder="رقم الهاتف للتواصل" required>
+                
+                <label style="font-size: 13px; color: #aaa; margin-top: 10px; display:block;">تاريخ الحجز:</label>
+                <input type="date" id="bookingDate" required>
+                
+                <label style="font-size: 13px; color: #aaa; margin-top: 10px; display:block;">وقت الحجز:</label>
+                <input type="time" id="bookingTime" required>
+                
+                <button type="submit" class="confirm-btn" id="submitBookingBtn">تأكيد الحجز عبر واتساب</button>
+            </form>
+            <p onclick="showPackages()" style="text-align:center; cursor:pointer; color:#888; margin-top:15px;">العودة للباكدجات</p>
+        </div>
+    </div>
+
+    <div class="footer-copyrights">© MeRo Photographer</div>
+</div>
+
+<div id="call-modal" class="modal"><div class="modal-content" style="text-align:center;">
+    <h3 style="color:var(--gold);">اتصل بنا</h3>
+    <a href="tel:01097422490" class="pay-option-btn vf-style">01097422490</a>
+    <p onclick="closeAll()" style="cursor:pointer; color:#888;">إغلاق</p>
+</div></div>
+
+<div id="payment-selection-modal" class="modal"><div class="modal-content">
+    <h3 style="text-align:center; color:var(--gold);">وسيلة التحويل</h3>
+    <button class="pay-option-btn vf-style" onclick="openOne('vfcash-modal')">فودافون كاش</button>
+    <button class="pay-option-btn insta-style" onclick="window.location.href='https://ipn.eg/S/dkjro201097422490/instapay/1BgGIC'">إنستا باي</button>
+    <p onclick="closeAll()" style="text-align:center; cursor:pointer; color:#888;">إغلاق</p>
+</div></div>
+
+<div id="vfcash-modal" class="modal"><div class="modal-content">
+    <h3 style="color:#e60000; text-align:center;">فودافون كاش</h3>
+    <p style="text-align:center; font-size: 14px; color: #ccc;">التحويل على رقم: <b style="color:var(--gold);">01097422490</b></p>
+    <input type="number" id="v-val" placeholder="المبلغ">
+    <button class="confirm-btn" style="background:#e60000; color:white;" onclick="callVF()">تحويل الآن</button>
+    <p onclick="closeAll()" style="text-align:center; cursor:pointer;">إغلاق</p>
+</div></div>
+
+<script>
+// ==========================================
+// حط لينك السكربت الخاص بك هنا بين العلامتين
+const SCRIPT_URL = "PUT_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE"; 
+// ==========================================
+
+function showPackages() { 
+    document.getElementById('main-view').style.display='none'; 
+    document.getElementById('booking-view').style.display='none'; 
+    document.getElementById('packages-view').style.display='flex'; 
+    window.scrollTo(0,0); 
+}
+function showMain() { 
+    document.getElementById('packages-view').style.display='none'; 
+    document.getElementById('booking-view').style.display='none'; 
+    document.getElementById('main-view').style.display='flex'; 
+}
+function openBookingForm(name, price) {
+    document.getElementById('pkgName').value = name;
+    document.getElementById('pkgPrice').value = price;
+    document.getElementById('bk-title').innerText = 'حجز: ' + name + ' (' + price + ')';
+    document.getElementById('packages-view').style.display='none';
+    document.getElementById('booking-view').style.display='flex';
+    window.scrollTo(0,0);
+}
+function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+function openOne(id) { closeAll(); document.getElementById(id).style.display = 'flex'; }
+function closeAll() { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); }
+
+function submitBooking(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submitBookingBtn');
+    btn.disabled = true;
+    btn.innerText = 'جاري تسجيل الحجز...';
+
+    const name = document.getElementById('clientName').value;
+    const phone = document.getElementById('clientPhone').value;
+    const date = document.getElementById('bookingDate').value;
+    const time = document.getElementById('bookingTime').value;
+    const pkg = document.getElementById('pkgName').value;
+    const price = document.getElementById('pkgPrice').value;
+
+    const formData = {
+        name: name,
+        phone: phone,
+        date: date,
+        time: time,
+        package: pkg + ' - ' + price
+    };
+
+    // إرسال البيانات لجوجل شيت والتقويم إذا تم وضع الرابط
+    if(SCRIPT_URL && SCRIPT_URL !== "PUT_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE") {
+        fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+        }).catch(err => console.log(err));
+    }
+
+    // فتح واتساب لتأكيد الحجز
+    setTimeout(() => {
+        const msg = `أهلاً MeRo، أرغب في تأكيد حجز:\n- الباكدج: ${pkg} (${price})\n- الاسم: ${name}\n- الهاتف: ${phone}\n- التاريخ: ${date}\n- الوقت: ${time}`;
+        window.open(`https://wa.me/201097422490?text=${encodeURIComponent(msg)}`);
+        btn.disabled = false;
+        btn.innerText = 'تأكيد الحجز عبر واتساب';
+        showMain();
+    }, 1000);
+}
+
+function callVF() { 
+    let v = document.getElementById('v-val').value; 
+    if(v) window.location.href=`tel:*9*7*01097422490*${v}%23`; 
+}
+</script>
+</body>
+</html>
